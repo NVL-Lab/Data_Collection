@@ -1,5 +1,5 @@
 # author: Nuria
-# This code will access the info in the serial port to read from the ESP32 
+# This code will access the info in the serial port to read from the ESP32
 
 import serial
 import time
