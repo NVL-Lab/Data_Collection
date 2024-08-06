@@ -1,5 +1,3 @@
-#include <Arduino.h>
-
 // Define pins
 #define SPEAKER_PIN 25
 #define TOUCH_SENSOR_PIN 32
@@ -34,11 +32,11 @@ void playTone(void *parameter) {
     if (xQueueReceive(toneQueue, &toneParams, portMAX_DELAY) == pdTRUE) {
       if (toneParams.frequency > 0 && toneParams.duration > 0) {
         tone(SPEAKER_PIN, toneParams.frequency);
-        vTaskDelay(toneParams.duration / portTICK_PERIOD_MS);
-        noTone(SPEAKER_PIN);
+        //vTaskDelay(toneParams.duration / portTICK_PERIOD_MS);
+        //noTone(SPEAKER_PIN);
       }
     }
-    vTaskDelay(10);  // Yield to other tasks
+    vTaskDelay(10);  
   }
 }
 
@@ -51,9 +49,9 @@ void monitorTouchSensor(void *parameter) {
       // Give semaphore on touch detection
       xSemaphoreGive(touchSemaphore);
       // Debounce delay
-      vTaskDelay(100 / portTICK_PERIOD_MS);
+      vTaskDelay(50 / portTICK_PERIOD_MS);
     }
-    vTaskDelay(10);  // Yield to other tasks
+    vTaskDelay(10);  
   }
 }
 
@@ -67,7 +65,7 @@ void controlSolenoid(void *parameter) {
       vTaskDelay(1000 / portTICK_PERIOD_MS); // Keep solenoid active for 1 second
       digitalWrite(SOLENOID_PIN, LOW); // Deactivate solenoid
     }
-    vTaskDelay(10);  // Yield to other tasks
+    vTaskDelay(10); 
   }
 }
 
@@ -77,10 +75,9 @@ void sendData(void *parameter) {
     // Wait for the semaphore from the touch sensor
     if (xSemaphoreTake(touchSemaphore, portMAX_DELAY) == pdTRUE) {
       // Read touch sensor status and send data in CSV format
-      int touchStatus = digitalRead(TOUCH_SENSOR_PIN);
-      // Simulate sending data (e.g., to a server)
+      Serial.println("Touch");
     }
-    vTaskDelay(2000 / portTICK_PERIOD_MS); // Send data every 2 seconds
+    vTaskDelay(10 / portTICK_PERIOD_MS);
   }
 }
 
@@ -109,7 +106,7 @@ void receiveData(void *parameter) {
         }
       }
     }
-    vTaskDelay(50 / portTICK_PERIOD_MS); // Check for new data every 50 ms
+    vTaskDelay(10 / portTICK_PERIOD_MS); 
   }
 }
 
