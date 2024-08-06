@@ -1,16 +1,19 @@
 # author: Nuria
 # This code will access the info in the serial port to read from the ESP32
+from typing import Optional
 
 import serial
 import time
-import serial.tools.list_ports
+import warnings
+
 
 def list_serial_ports():
     ports = serial.tools.list_ports.comports()
     for port in ports:
         print(f"Found port: {port.device}")
 
-def read_from_serial(port, baud_rate=9600):
+
+def read_from_serial(port: str, baud_rate: int = 9600):
     try:
         with serial.Serial(port, baud_rate, timeout=1) as ser:
             print("Waiting for ESP32 to finish booting...")
@@ -24,13 +27,31 @@ def read_from_serial(port, baud_rate=9600):
                     except UnicodeDecodeError:
                         data = ser.readline().decode('latin-1').rstrip()
                         print(f"Received (decoded with latin-1): {data}")
-                    if data == 'Task2 is running': # to be changed by the serial message for sensor
+                    if data == 'Touch':  # to be changed by the serial message for sensor
                         print('XXXXXXX')
                         # do something
-                    elif data == 'Task1 is running': # to be deleted, only here to debug
-                        print('YYYYY')
+                    else:  # to be deleted, only here to debug
+                        warnings.warn("Unexpected data received: {}".format(data))
                         # do something else
     except serial.SerialException as e:
         print(f"Error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+
+def write_in_serial(port: str, baud_rate: int = 9600, command:Optional[str]=None, frequency:Optional[int]=None, duration:Optional[int]=None):
+    try:
+        with serial.Serial(port, baud_rate, timeout=1) as ser:
+            if command == "activate":
+                message = "activate"
+            elif frequency is not None:
+                if duration is None:
+                    duration = 0
+                message = "{},{}".format(frequency, duration)
+            else:
+                raise ValueError("Invalid command or parameters")
+
+            ser.write(message.encode())
+            print(f"Sent to ESP32: {message}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
