@@ -30,10 +30,12 @@ void playTone(void *parameter) {
   while (1) {
     // Wait to receive tone parameters from the queue
     if (xQueueReceive(toneQueue, &toneParams, portMAX_DELAY) == pdTRUE) {
-      if (toneParams.frequency > 0 && toneParams.duration > 0) {
+      if (toneParams.frequency > 0) {
         tone(SPEAKER_PIN, toneParams.frequency);
-        //vTaskDelay(toneParams.duration / portTICK_PERIOD_MS);
-        //noTone(SPEAKER_PIN);
+        if toneParams.duration > 0 {
+          vTaskDelay(toneParams.duration / portTICK_PERIOD_MS);
+          noTone(SPEAKER_PIN);
+        }
       }
     }
     vTaskDelay(10);  
