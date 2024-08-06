@@ -32,7 +32,7 @@ void playTone(void *parameter) {
     if (xQueueReceive(toneQueue, &toneParams, portMAX_DELAY) == pdTRUE) {
       if (toneParams.frequency > 0) {
         tone(SPEAKER_PIN, toneParams.frequency);
-        if toneParams.duration > 0 {
+        if (toneParams.duration > 0) {
           vTaskDelay(toneParams.duration / portTICK_PERIOD_MS);
           noTone(SPEAKER_PIN);
         }
