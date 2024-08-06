@@ -119,7 +119,7 @@ void setup() {
   solenoidSemaphore = xSemaphoreCreateBinary();
   
   // Create queue for tone parameters
-  toneQueue = xQueueCreate(10, sizeof(ToneParameters));
+  toneQueue = xQueueCreate(1, sizeof(ToneParameters));
 
   // Create tasks
   xTaskCreate(playTone, "Play Tone", 2048, NULL, 1, NULL);
