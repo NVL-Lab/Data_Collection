@@ -1,0 +1,55 @@
+<!-- File: templates/show_results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVL Lab - Show Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_show_results.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>@ NVL LAB - Show Results</h1>
+    </header>
+
+    <div class="content">
+        <form method="POST" action="{{ url_for('show_results') }}" enctype="multipart/form-data">
+            <div class="file-section">
+                <label for="file-input">Select your path:</label>
+                <input type="file" name="file" id="file-input" accept=".parquet" required>
+                <button type="submit" class="choose-btn">Display</button>
+            </div>
+        </form>
+
+        <div class="table-container">
+            {% if has_data %}
+            <h3>Uploaded Parquet Data:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        {% for col in table_data.columns %}
+                        <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table_data.values %}
+                    <tr>
+                        {% for cell in row %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No data to display. Please upload a .parquet file.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Dummy Footer - NVL Lab</p>
+    </footer>
+</body>
+</html>
