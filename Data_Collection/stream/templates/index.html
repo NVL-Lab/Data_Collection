@@ -1,0 +1,34 @@
+<!-- File: templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVL Lab - Main</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="header">
+        <h1>@ NVL LAB</h1>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Run Tests</h2>
+            <button onclick="location.href='/run_tests'">Start</button>
+        </div>
+        <div class="card">
+            <h2>Show Results</h2>
+            <a class="show" href="{{ url_for('show_results') }}"><button>Show</button></a>
+        </div>
+        <div class="card">
+            <h2>Upload Files</h2>
+            <button onclick="alert('Functionality not implemented yet!')">Upload</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Dummy Footer - NVL Lab</p>
+    </footer>
+</body>
+</html>

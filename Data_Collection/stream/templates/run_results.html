@@ -1,0 +1,52 @@
+<!-- File: templates/run_results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiment Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_results.css') }}">
+</head>
+<body>
+    <!-- Header section -->
+    <header>
+        Experiment Results
+    </header>
+
+    <!-- Main container for content -->
+    <div class="container">
+        <!-- Experiment status message -->
+        <div class="experiment-message">
+            {{ message }}
+        </div>
+
+        <!-- Camera script output -->
+        <div class="output-container section">
+            <div class="output-header">Camera Script Output:</div>
+            <pre class="output">{{ camera_output }}</pre>
+        </div>
+
+        <!-- Stream information extracted from the camera output -->
+        {% if 'Stream Name' in camera_output %}
+        <div class="stream-info section">
+            <h3>Stream Information</h3>
+            <p><strong>Stream Name:</strong> {{ camera_output.split('Stream Name:')[1].splitlines()[0].strip() }}</p>
+            <p><strong>Total Frames Captured:</strong> {{ camera_output.split('Total frames captured:')[1].splitlines()[0].strip() }}</p>
+        </div>
+        {% else %}
+        <!-- <p>No stream information available.</p> -->
+        {% endif %}
+
+        <!-- Coordinates script output -->
+        <div class="output-container section">
+            <div class="output-header">Coordinates Script Output:</div>
+            <pre class="output">{{ coordinates_output }}</pre>
+        </div>
+    </div>
+
+    <!-- Footer section -->
+    <footer>
+        Dummy Footer - NVL Lab
+    </footer>
+</body>
+</html>
